@@ -64,7 +64,37 @@ for feature in data.columns[:-1]:  # Exclude the 'species' column for histograms
 
 
 
+#11
 
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load Iris dataset from CSV file
+dataset_path = "/content/IRIS.csv"  # Replace with your CSV file path
+iris_data = pd.read_csv(dataset_path)
+
+# Display the first few rows to understand the dataset structure
+print(iris_data.head())
+
+# Ensure columns are named correctly and map the target column if needed
+# (Assuming your CSV has similar column names and a target column)
+
+# 1. List features and their types
+print("\nFeatures and their types:")
+for col in iris_data.columns[:-1]:  # Assuming the last column is the target column
+    print(f"Feature: {col}, Type: {iris_data[col].dtype}")
+
+print("\nTarget (Species) is nominal.")
+
+# 2. Create histograms for each feature
+for col in iris_data.columns[:-1]:  # Exclude the target column
+    plt.figure(figsize=(8, 5))
+    sns.histplot(data=iris_data, x=col, kde=True, bins=20, color='blue')
+    plt.title(f"Distribution of {col}")
+    plt.xlabel(col)
+    plt.ylabel("Frequency")
+    plt.show()
 
 
 
@@ -138,6 +168,49 @@ for feature in data.columns[:-1]:  # Exclude the 'species' column for box plots
 
 
 
+#12
+
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load the Iris dataset (assuming it's in a CSV file)
+dataset_path = "/content/IRIS.csv"  # Replace with your dataset path
+iris_data = pd.read_csv(dataset_path)
+
+# Display the first few rows to confirm data loading
+print(iris_data.head())
+
+# 1. Create box plots for each feature in the dataset
+features = iris_data.columns[:-1]  # Exclude the target column (assuming it's the last column)
+
+for feature in features:
+    plt.figure(figsize=(8, 5))
+    sns.boxplot(data=iris_data, x=feature, color='lightblue')
+    plt.title(f"Box Plot of {feature}")
+    plt.xlabel(feature)
+    plt.show()
+
+# 2. Identify and discuss distributions and outliers
+print("\nSummary statistics for each feature:")
+summary_stats = iris_data[features].describe()
+print(summary_stats)
+
+# Identify outliers using the 1.5*IQR rule
+for feature in features:
+    Q1 = iris_data[feature].quantile(0.25)
+    Q3 = iris_data[feature].quantile(0.75)
+    IQR = Q3 - Q1
+    lower_bound = Q1 - 1.5 * IQR
+    upper_bound = Q3 + 1.5 * IQR
+    outliers = iris_data[(iris_data[feature] < lower_bound) | (iris_data[feature] > upper_bound)]
+
+    print(f"\nFeature: {feature}")
+    print(f"Lower Bound: {lower_bound}, Upper Bound: {upper_bound}")
+    print(f"Number of Outliers: {len(outliers)}")
+    if not outliers.empty:
+        print("Outlier Rows:")
+        print(outliers)
 
 
 
